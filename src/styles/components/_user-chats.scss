@@ -1,0 +1,13 @@
+.chats {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-chat {
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-secondary);
+    transition: all 0.1s;
+  }
+}

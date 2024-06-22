@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import './components/form';
+@import './components/input';
+@import './components/button';
+@import './components/header';
+@import './components/navbar';
+@import './components/layout';
+@import './components/message';
+@import './components/user-chats';
+
+@import './pages/chat';
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+  outline: none;
+  transition: all 0.2s;
+}
+
+:root {
+  --color-primary: #4b9e9e;
+  --color-secondary: #d4a5a5;
+  --color-tertiary: #b3a4d8;
+  --color-error: rgb(148, 0, 0);
+  --color-background-input: rgba(9, 24, 66, 0.522);
+  --color-background-input-focus: rgb(9, 24, 66);
+
+  --color-background-dark: #1a1a1d;
+  --color-background-on-hover: ;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  // overflow: hidden;
+}
+
+body {
+  font-family: 'Montseratt', sans-serif;
+  font-size: 2rem;
+  line-height: 1.6;
+  color: var(--color-primary);
+  background-color: var(--color-background-dark);
+  // todo: dark theme
+}

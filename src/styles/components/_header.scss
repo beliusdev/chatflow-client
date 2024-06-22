@@ -1,0 +1,13 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-end;
+
+  &__login-name {
+    font-weight: 800;
+    color: var(--color-tertiary);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

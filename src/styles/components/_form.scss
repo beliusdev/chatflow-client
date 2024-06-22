@@ -1,0 +1,23 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-start;
+
+  &--inline-button {
+    flex-direction: row;
+  }
+
+  &__button {
+    font-size: 1.6rem;
+  }
+
+  &__field {
+    padding: 0.5rem 2rem;
+  }
+
+  &__error-message {
+    font-size: 1.2rem;
+    color: var(--color-error);
+  }
+}

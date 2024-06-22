@@ -1,0 +1,14 @@
+input {
+  font: inherit;
+  padding: 0rem 1rem;
+  border: 1px solid var(--color-secondary);
+  border-radius: 3px;
+  background-color: var(--color-background-input);
+  color: #fff;
+  transition: all 0.5s;
+
+  &:focus {
+    border-color: var(--color-tertiary);
+    background-color: var(--color-background-input-focus);
+  }
+}
