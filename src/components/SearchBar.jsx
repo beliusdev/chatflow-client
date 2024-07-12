@@ -1,19 +1,18 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { getErrorMessage } from '../utils/helper';
-import { setChats, setMessage, setSearchTerm } from '../state';
+import { getErrorMessage } from "../utils/helper";
+import { setChats, setMessage, setSearchTerm } from "../state";
 
-import { searchUsers } from '../api/user';
-import { getCurrentUserChats } from '../api/chat';
+import { searchUsers } from "../api/user";
+import { getCurrentUserChats } from "../api/chat";
 
 export default function SearchBar() {
   const dispatch = useDispatch();
-  const chats = useSelector(({ chats }) => chats);
-  const currentUser = useSelector(({ currentUser }) => currentUser);
   const searchTerm = useSelector(({ searchTerm }) => searchTerm);
+  const currentUser = useSelector(({ currentUser }) => currentUser);
 
-  const [debounceTimeout, setDebounceTimeout] = useState(null);
+  const [debounceTimeout, setDebounceTimeout] = useState(null); // todo: check
 
   const handleChange = async (e) => {
     const value = e.target.value;
@@ -32,7 +31,7 @@ export default function SearchBar() {
           setMessage({
             success: false,
             text: getErrorMessage(error),
-          }),
+          })
         );
       }
     }, 1000);
@@ -41,7 +40,7 @@ export default function SearchBar() {
   };
 
   useEffect(() => {
-    if (searchTerm) return;
+    if (searchTerm || !currentUser) return;
 
     const getUserChats = async () => {
       try {
@@ -53,13 +52,13 @@ export default function SearchBar() {
           setMessage({
             success: false,
             text: getErrorMessage(error),
-          }),
+          })
         );
       }
     };
 
     getUserChats();
-  }, [dispatch, chats]);
+  }, [dispatch, currentUser]);
 
   useEffect(() => {
     return () => clearTimeout(debounceTimeout);

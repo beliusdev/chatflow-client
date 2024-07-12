@@ -1,13 +1,22 @@
-.chats {
+.user-chats {
   display: flex;
   flex-direction: column;
+  gap: 0.3rem;
+  flex: 0 0 content;
+  height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .user-chat {
   cursor: pointer;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 1rem;
 
   &:hover {
     color: var(--color-secondary);
     transition: all 0.1s;
+    border-color: var(--color-secondary);
   }
 }

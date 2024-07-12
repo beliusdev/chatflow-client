@@ -1,15 +1,15 @@
-import moment from 'moment';
-import io from 'socket.io-client';
+import moment from "moment";
+import io from "socket.io-client";
 
-import { useParams } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import Hero from './Hero';
+import Hero from "./Hero";
 
-import { getErrorMessage } from '../utils/helper';
-import { setCurrentChat, setMessage } from '../state';
-import { fetchChatMessages, getChat, sendMessage } from '../api/chat';
+import { getErrorMessage } from "../utils/helper";
+import { setCurrentChat, setMessage } from "../state";
+import { fetchChatMessages, getChat, sendMessage } from "../api/chat";
 
 export default function Chat() {
   const scroll = useRef();
@@ -24,17 +24,17 @@ export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [textMessage, setTextMessage] = useState('');
+  const [textMessage, setTextMessage] = useState("");
 
   const recipientId = currentChat?.members?.find((id) => id !== currentUser.id);
   const recipientName = currentChat?.names?.find(
-    (name) => name !== currentUser.displayName,
+    (name) => name !== currentUser.displayName
   );
 
   const handleChange = async (e) => {
     const value = e.target.value;
     setTextMessage(value);
-    socket.emit('typing', { recipientId });
+    socket.emit("typing", { recipientId });
   };
 
   const sendTextMessage = async (e) => {
@@ -53,39 +53,41 @@ export default function Chat() {
       // todo
     }
 
-    socket.emit('sendMessage', {
+    socket.emit("sendMessage", {
       recipientId,
       text: textMessage,
       senderId: currentUser.id,
     });
     setMessages((prev) => [...prev, data]);
-    setTextMessage('');
+    setTextMessage("");
   };
 
   useEffect(() => {
-    scroll.current?.scrollIntoView({ behavior: 'smooth' });
+    scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, textMessage]);
 
   // Connect to socket server
   useEffect(() => {
-    const newSocket = io('http://localhost:8000');
+    if (!currentUser) return;
+
+    const newSocket = io("http://localhost:8000");
     setSocket(newSocket);
 
     return () => {
       newSocket.disconnect();
     };
-  }, []);
+  }, [currentUser]);
 
   // Add online users
   useEffect(() => {
     if (socket === null) return;
-    socket.emit('addNewUser', currentUser?.id);
-    socket.on('getOnlineUsers', (res) => {
+    socket.emit("addNewUser", currentUser?.id);
+    socket.on("getOnlineUsers", (res) => {
       // todo: setOnlineUsers(res);
     });
 
     return () => {
-      socket.off('getOnlineUsers');
+      socket.off("getOnlineUsers");
     };
   }, [socket]);
 
@@ -93,13 +95,13 @@ export default function Chat() {
   useEffect(() => {
     if (socket === null || !currentChat) return;
 
-    socket.on('typing', () => setIsTyping(true));
+    socket.on("typing", () => setIsTyping(true));
     const timeout = setTimeout(() => {
       setIsTyping(false);
     }, 3000);
 
     return () => {
-      socket.off('typing');
+      socket.off("typing");
       clearTimeout(timeout);
     };
   }, [currentChat, isTyping]);
@@ -108,18 +110,18 @@ export default function Chat() {
   useEffect(() => {
     if (socket === null) return;
 
-    socket.on('getMessage', (res) => {
+    socket.on("getMessage", (res) => {
       setMessages((prev) => [...prev, res]);
     });
 
     return () => {
-      socket.off('getMessage');
+      socket.off("getMessage");
     };
   }, [socket]);
 
   // Get Chats and Messages
   useEffect(() => {
-    if (!id) setIsLoading(false);
+    if (!id) return setIsLoading(false);
 
     setIsLoading(true);
     try {
@@ -135,7 +137,7 @@ export default function Chat() {
         setMessage({
           success: false,
           text: getErrorMessage(error),
-        }),
+        })
       );
     } finally {
       setIsLoading(false);
@@ -158,7 +160,7 @@ export default function Chat() {
         setMessage({
           success: false,
           text: getErrorMessage(error),
-        }),
+        })
       );
     }
   }, [currentChat]);
@@ -195,11 +197,13 @@ export default function Chat() {
           messages.map((message) => (
             <p
               key={message.id}
-              className={`message ${message.senderId !== recipientId ? 'message--sender' : ''}`}
+              className={`message ${
+                message.senderId !== recipientId ? "message--sender" : ""
+              }`}
             >
               {message.text}
               <span className="message__date">
-                {moment(message.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+                {moment(message.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
               </span>
             </p>
           ))

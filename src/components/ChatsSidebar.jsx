@@ -1,15 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { setChats } from '../state';
-import { getCurrentUserChats } from '../api/chat';
+import { setChats } from "../state";
+import { getCurrentUserChats } from "../api/chat";
 
-import UserChat from './UserChat';
-import SearchBar from './SearchBar';
+import UserChat from "./UserChat";
+import SearchBar from "./SearchBar";
 
 export default function ChatsSidebar() {
   const dispatch = useDispatch();
   const chats = useSelector(({ chats }) => chats);
+  const searchTerm = useSelector(({ searchTerm }) => searchTerm);
   const currentUser = useSelector(({ currentUser }) => currentUser);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,12 +28,12 @@ export default function ChatsSidebar() {
     };
 
     fetchChats();
-  }, [dispatch, currentUser]);
+  }, [dispatch, currentUser, searchTerm]);
 
   return (
     <div className="user-chats">
       <SearchBar />
-      {chats &&
+      {Array.isArray(chats) &&
         chats.map((chat) => (
           <UserChat key={chat.chatId || Math.random()} chat={chat} />
         ))}
